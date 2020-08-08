@@ -1,0 +1,17 @@
+#ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: brownbag-website
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+    - host: brownbag.410f51c6f8a440a4937f.australiasoutheast.aksapp.io
+      http:
+        paths:
+          - backend: # How the ingress will handle the requests
+              serviceName: brownbag-website # Which service the request will be forwarded to
+              servicePort: http # Which port in that service
+            path: / # Which path is this rule referring to
+

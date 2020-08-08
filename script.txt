@@ -1,0 +1,29 @@
+RESOURCE_GROUP=brownbag
+CLUSTER_NAME=brownbagcluster
+DNS_NAME_PREFIX=brownbag
+ACR_NAME=brownbagacr
+az group create --name $RESOURCE_GROUP --location australiasoutheast
+az aks create --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --node-count 3 --enable-addons http_application_routing --dns-name-prefix $DNS_NAME_PREFIX-$RANDOM --generate-ssh-keys --node-vm-size Standard_B2s
+az aks get-credentials --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
+az acr create --resource-group $RESOURCE_GROUP --name $ACR_NAME --sku Basic
+
+cd brownbagsite
+az acr build --image brownbag-website --registry $ACR_NAME --file Dockerfile .
+
+show the deployment file
+
+kubectl apply -f ./deployment.yaml
+kubectl get deploy brownbag-website
+kubectl get podso
+
+"The name [in deployment.yaml] is the name of the service, and you'll use it to identify and query the service information when using kubectl."
+
+edit service.yaml
+kubectl apply -f ./service.yaml
+
+kubectl apply -f ./ingress.yaml
+
+do the dns stuff (write this up again)
+
+
+
