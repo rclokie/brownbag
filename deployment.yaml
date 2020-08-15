@@ -1,26 +1,33 @@
 # deployment.yaml
-apiVersion: apps/v1 # The API resource where this workload resides
+apiVersion: apps/v1 
 kind: Deployment # The kind of workload we're creating
 metadata:
-  name: brownbag-website # This will be the name of the deployment
-spec:
-  selector: # Define the wrapping strategy
-    matchLabels: # Match all pods with the defined labels
-      app: brownbag-website # Labels follow the `name: value` template
+  name: brownbag-website # A client-provided string that refers to an object in a resource URL, 
+                         # such as /api/v1/pods/some-name.
 
-  template: # This is the template of the pod inside the deployment
+spec: #specification of the Deployment 
+  selector: # 
+    matchLabels: # Match all pods with the defined labels
+      app: brownbag-website # so this deployment is takling about all "templates" (pods) with this label
+
+  replicas: 3
+
+  template: # Template describes the pods that will be created.  
     metadata: # Metadata for the POD
       labels:
         app: brownbag-website
     spec:
-      containers: # Here we define all containers
-        - image: brownbagacr.azurecr.io/brownbag-website
+      containers: # the containers that go in the pod.
+                  # note - can have multiple containers per pod, but 1-1 is standard
+        #- image: brownbagacr.azurecr.io/brownbag-website:v1 # fixed tag - won't update pod
+        #- image: brownbagacr.azurecr.io/brownbag-website:latest # - latest tag - will update pod
+        - image: brownbagacr.azurecr.io/brownbag-website # no tag - will update pod
           name: brownbag-website
           resources:
             requests: # Minimum amount of resources requested
               cpu: 100m
               memory: 128Mi
-            limits: # Maximum amount of resources requested
+            limits: # limit at which the container gets killed, if exceeded
               cpu: 250m
               memory: 256Mi
           ports:
