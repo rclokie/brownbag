@@ -8,9 +8,7 @@ metadata:
 spec: #specification of the Deployment 
   selector: # 
     matchLabels: # Match all pods with the defined labels
-      app: brownbag-website # so this deployment is takling about all "templates" (pods) with this label
-
-  replicas: 3
+      app: brownbag-website # so this deployment is 'selecting' all "templates" (pods) with this label
 
   template: # Template describes the pods that will be created.  
     metadata: # Metadata for the POD
@@ -19,9 +17,7 @@ spec: #specification of the Deployment
     spec:
       containers: # the containers that go in the pod.
                   # note - can have multiple containers per pod, but 1-1 is standard
-        #- image: brownbagacr.azurecr.io/brownbag-website:v1 # fixed tag - won't update pod
-        #- image: brownbagacr.azurecr.io/brownbag-website:latest # - latest tag - will update pod
-        - image: brownbagacr.azurecr.io/brownbag-website # no tag - will update pod
+        - image: brownbagacr.azurecr.io/brownbag-website:v1
           name: brownbag-website
           resources:
             requests: # Minimum amount of resources requested

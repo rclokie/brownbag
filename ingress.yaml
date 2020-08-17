@@ -7,7 +7,7 @@ metadata:
     kubernetes.io/ingress.class: addon-http-application-routing
 spec:
   rules:
-    - host: brownbag.ba1d16fcdc83447a86a8.australiasoutheast.aksapp.io
+    - host: brownbag.3aff9c0187a6487cb192.australiasoutheast.aksapp.io
       http:
         paths:
           - backend: # How the ingress will handle the requests

@@ -4,20 +4,29 @@ DNS_NAME_PREFIX=brownbag
 ACR_NAME=brownbagacr
 az group create --name $RESOURCE_GROUP --location australiasoutheast
 az aks create --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --node-count 3 --enable-addons http_application_routing --dns-name-prefix $DNS_NAME_PREFIX-$RANDOM --generate-ssh-keys --node-vm-size Standard_B2s
+# ^ takes 5m
+
+#slides 
+
 az aks get-credentials --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
 az acr create --resource-group $RESOURCE_GROUP --name $ACR_NAME --sku Basic
 az aks update --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --attach-acr $ACR_NAME
+# ^ takes 1m
 
+#slides 
 cd brownbagsite
-az acr build --image brownbag-website --registry $ACR_NAME --file Dockerfile .
 
-show the deployment file
+#show the app and the dockerfile
 
+az acr build --image brownbag-website:v1 --registry $ACR_NAME --file Dockerfile .
+
+#show the deployment file
+
+#kubectl does a rest call using the credentials that we selected with az aks get-credentials.
 kubectl apply -f ./deployment.yaml
 kubectl get deploy brownbag-website
 kubectl get pod
 
-#"The name [in deployment.yaml] is the name of the service, and you'll use it to identify and query the service information when using kubectl."
 
 #show service.yaml
 kubectl apply -f ./service.yaml
