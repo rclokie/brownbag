@@ -1,3 +1,5 @@
+#start with slides
+> ~/.kube/config
 RESOURCE_GROUP=brownbag
 CLUSTER_NAME=brownbagcluster
 DNS_NAME_PREFIX=brownbag
@@ -14,27 +16,29 @@ az aks update --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP --attach-acr
 # ^ takes 1m
 
 #slides 
+
 cd brownbagsite
 
 #show the app and the dockerfile
 
 az acr build --image brownbag-website:v1 --registry $ACR_NAME --file Dockerfile .
 
-#show the deployment file
+#execute the deployment, service, and 
 
-#kubectl does a rest call using the credentials that we selected with az aks get-credentials.
 kubectl apply -f ./deployment.yaml
-kubectl get deploy brownbag-website
-kubectl get pod
-
-
-#show service.yaml
 kubectl apply -f ./service.yaml
-
-#show ingress.yaml
 az network dns zone list --output table
 # - replace spec.rules.host with brownbag.[uuid].[region]
 kubectl apply -f ./ingress.yaml
+
+#back to slides, at the service/ingress slides, talk through those, tabbing to look at the files as desired
+
+kubectl get deploy brownbag-website -o=wide
+kubectl get pod -o=wide
+kubectl get node -o=wide
+kubectl get service -o=wide
+kubectl get ingress -o=wide
+
 
 az network dns zone list --output table # until it says 4, then grab zonename and resourcegroup and put into:
 az network dns record-set list -g <resource-group> -z <zone-name> --output table
